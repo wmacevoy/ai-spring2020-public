@@ -6,7 +6,7 @@
 1. Install conda (desk18 has that installed as well)
 1. Create a local envirnoment for python using python
 ```bash
-conda create -p env pytorch torchvision cudatoolkit=10.1 -c pytorch
+conda create -p env pytorch torchvision -c pytorch
 
 ```
 1. Copy py3hello from my wmacevoy/csci000-astudent project to your project
