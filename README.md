@@ -11,7 +11,7 @@ conda create -p env pytorch torchvision -c pytorch
 ```
 1. Copy py3hello from my wmacevoy/csci000-astudent project to your project
 ```bash
-cp -r py3hello ../ai-spring2020-public/
+cp -r ../ai-spring2020-public/py3hello .
 ```
 1. To activate the virtual environment in the project directory
 ```bash
