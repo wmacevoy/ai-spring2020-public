@@ -19,6 +19,12 @@ class Move:
         
         # TODO: not all diagonals are allowed!
         dist : int = max(abs(toRow-fromRow),abs(toCol-fromCol))
+        fromDiag : bool = (fromRow + fromCol) % 2 == 0
+        toDiag : bool = (toRow + toCol) % 2 == 0
+        straight : bool = (fromRow == toRow) or \
+                (fromCol == toCol)
+        if (not straight) and (not fromDiag or not toDiag):
+            raise ValueError("only some diagonals allowed") 
         if mark == Const.MARK_GOAT:
             if dist > 1:
                 raise ValueError("goats can only place or move 1")
