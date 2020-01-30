@@ -57,7 +57,9 @@ class Game:
             toRow : int = fromRow+dist*dir[0]
             toCol : int = fromCol+dist*dir[1]
             try:
-                moves.append(Move(mark,fromRow,fromCol,toRow,toCol))
+                move=Move(mark,fromRow,fromCol,toRow,toCol)
+                self.moveOk(move)
+                moves.append(move)
             except ValueError:
                 pass
         return moves
@@ -94,9 +96,6 @@ class Game:
         else:
             return  self.goatMoves()
 
-    def _draw(self):
-        return self._unplayed == 0
-
     def play(self,move : Move):
         if self.over:
             raise RuntimeError("move after game is over")
@@ -110,7 +109,6 @@ class Game:
             self._captured += 1
             if self._captured >= Const.GOAT_CAPTURES_FOR_TIGER_WIN:
                 self._state = Const.STATE_WIN_TIGER
-            self._board[capRow][capCol] = Const.MARK_NONE
             self._captureTurns.append(self._turns)
         if self._state == Const.STATE_TURN_GOAT:
             if len(self.tigerMoves())==0:
@@ -148,7 +146,7 @@ class Game:
     
     def playCommands(self,commands : str) -> None:
         for command in commands.split():
-            self.move(Move.parse(command))
+            self.play(Move.parse(command))
 
     def __str__(self) -> str:
         ans = "\n"
@@ -159,7 +157,7 @@ class Game:
             ans = ans + s + "\n"
         return ans
 
-    def copyTo(self,target) -> None:
+    def copyTo(self,target : 'Game') -> None:
         target._board = [[self._board[row][col] for col in range(Const.COLS)] for row in range(Const.ROWS)]
         target._state = self._state
         target._turns = self._turns
