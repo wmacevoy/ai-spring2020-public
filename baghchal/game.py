@@ -26,10 +26,6 @@ class Game:
             self._state == Const.STATE_DRAW
 
     def moveOk(self,move : Move) -> None:
-        if move.mark == Const.MARK_TIGER and self._state != Const.STATE_TURN_TIGER:
-            raise ValueError("tiger cannot play")
-        if move.mark == Const.MARK_GOAT and self._state != Const.STATE_TURN_GOAT:
-            raise ValueError("goat cannot play")
         if self._board[move.toRow][move.toCol] != Const.MARK_NONE:
             raise ValueError("destination (to) is occupied") 
         if not move.placement and self._board[move.fromRow][move.fromCol] != move.mark:
@@ -150,6 +146,7 @@ class Game:
 
     def __str__(self) -> str:
         ans = "\n"
+        ans = ans + "turn " + str(self._turns) + ":\n"
         for row in range(Const.ROWS):
             s=""
             for col in range(Const.COLS):
