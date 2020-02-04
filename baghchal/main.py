@@ -1,9 +1,8 @@
 from game import Game
 import random
+from matchup import Matchup
 
-game = Game()
-while not game.over:
-    moves = game.moves
-    move = random.choice(moves)
-    game.play(move)
-    print(game)
+matchup = Matchup()
+while not matchup.over:
+    matchup.turn()
+    print(matchup.game)
