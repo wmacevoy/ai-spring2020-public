@@ -146,12 +146,13 @@ class Game:
 
     def __str__(self) -> str:
         ans = "\n"
-        ans = ans + "turn " + str(self._turns) + ":\n"
+        ans = ans + "turn " + str(self._turns) + "(" + Const.stateStr(self.state) + "):\n"
         for row in range(Const.ROWS):
             s=""
             for col in range(Const.COLS):
                 s=s+Const.markStr(self._board[row][col])
             ans = ans + s + "\n"
+        
         return ans
 
     def copyTo(self,target : 'Game') -> None:
