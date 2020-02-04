@@ -5,8 +5,8 @@ from move import Move
 import random
 
 class RandomAgent(Agent):
-    def __init__(self,game : Game, turn : int):
-        super(RandomAgent, self).__init__(game,turn)
+    def __init__(self,game : Game, side : int):
+        super(RandomAgent, self).__init__(game,side)
     def propose(self) -> Move:
         if self.side == Const.MARK_GOAT:
             moves = self.game.goatMoves()
