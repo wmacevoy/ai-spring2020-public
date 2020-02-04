@@ -30,3 +30,22 @@ class Matchup:
     @property
     def over(self) -> bool:
         return self._game.over
+
+    @property
+    def tigerAgent(self) -> Agent:
+        return self._tigerAgent
+    @tigerAgent.setter
+    def tigerAgent(self,value : Agent) -> None:
+        value.game = self._game
+        value.side = Const.MARK_TIGER
+        self._tigerAgent = value
+
+    @property
+    def goatAgent(self) -> Agent:
+        return self._goatAgent
+    @goatAgent.setter
+    def goatAgent(self,value : Agent) -> None:
+        value.game = self._game
+        value.side = Const.MARK_GOAT
+        self._goatAgent = value
+
