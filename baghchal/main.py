@@ -9,6 +9,11 @@ from stats import Stats
 matchup = Matchup()
 # matchup.tigerAgent = HungryTigerAgent(matchup.game)
 matchup.goatAgent = ScaredGoatAgent(matchup.game)
-stats = Stats(matchup, 100)
+
+while not matchup.over:
+    matchup.turn()
+    print(matchup.game)
+
+stats = Stats(matchup, 10)
 stats.playAll()
 stats.summarize()
