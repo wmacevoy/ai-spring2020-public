@@ -7,7 +7,7 @@ from scaredgoatagent import ScaredGoatAgent
 from stats import Stats
 
 matchup = Matchup()
-# matchup.tigerAgent = HungryTigerAgent(matchup.game)
+matchup.tigerAgent = HungryTigerAgent(matchup.game)
 matchup.goatAgent = ScaredGoatAgent(matchup.game)
 
 while not matchup.over:
