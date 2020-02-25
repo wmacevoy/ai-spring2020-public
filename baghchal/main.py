@@ -5,15 +5,26 @@ from matchup import Matchup
 from hungrytigeragent import HungryTigerAgent
 from scaredgoatagent import ScaredGoatAgent
 from stats import Stats
+from playoff import Playoff
+from elusiveGoatAgent import elusiveGoatAgent
+from congoat import ConserveGoatAgent
+from aggressivegoatagent import AggressiveGoatAgent
+from sidehugginggoat import SideHuggingGoat
+from SmartGoatAgent import SmartGoatAgent
+from randomagent import RandomAgent
+from const import Const
 
-matchup = Matchup()
-matchup.tigerAgent = HungryTigerAgent(matchup.game)
-matchup.goatAgent = ScaredGoatAgent(matchup.game)
+game = Game()
+playoff = Playoff()
 
-while not matchup.over:
-    matchup.turn()
-    print(matchup.game)
+playoff.addGoatAgent("elusive goat",elusiveGoatAgent(game))
+playoff.addGoatAgent("conservative goat",ConserveGoatAgent(game))
+playoff.addGoatAgent("aggressive goat", AggressiveGoatAgent(game))
+playoff.addGoatAgent("side hugging goat", SideHuggingGoat(game))
+playoff.addGoatAgent("smart goat", SmartGoatAgent(game))
+playoff.addGoatAgent("random goat",RandomAgent(game,Const.MARK_GOAT))
 
-stats = Stats(matchup, 10)
-stats.playAll()
-stats.summarize()
+playoff.addTigerAgent("random tiger",RandomAgent(game,Const.MARK_TIGER))
+playoff.addTigerAgent("hungry tiger",HungryTigerAgent(game))
+
+playoff.play()
