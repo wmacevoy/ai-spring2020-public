@@ -15,6 +15,6 @@ class HungryTigerAgent(Agent):
             if move.capture:
                 captures.append(move)
         if len(captures) != 0:
-            return random.choice(captures)
+            return random.choice(captures) 
         else:
             return random.choice(moves)

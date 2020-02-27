@@ -23,11 +23,13 @@ class Playoff:
                 matchup : Matchup = Matchup()
                 matchup.tigerAgent = tigerAgent
                 matchup.goatAgent = goatAgent
-                stats : Stats = Stats(matchup,10)
-                stats.playAll()
-                print(f"goat {goatAgentName} vs. tiger {tigerAgentName}: ")
-                stats.summarize()
-
+                stats : Stats = Stats(matchup,self._trials)
+                try:
+                    stats.playAll()
+                    print(f"{goatAgentName} vs. {tigerAgentName}: ")
+                    stats.summarize()
+                except:
+                    print(f"{goatAgentName} vs. {tigerAgentName}: failed")
 
 
     
