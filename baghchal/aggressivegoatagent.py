@@ -10,12 +10,12 @@ class AggressiveGoatAgent(Agent):
         super(AggressiveGoatAgent, self).__init__(game,Const.MARK_GOAT)
     def propose(self) -> Move:
         moves = self.game.goatMoves()
-        safeMoves : list[Move]=[]
-        safeMovesPriority : list[int]=[]
+        safeMoves : List[Move]=[]
+        safeMovesPriority : List[int]=[]
         for move in moves:
             self.game.play(move)
             tigerMoves = self.game.tigerMoves()
-            captures : list[Move]=[]
+            captures : List[Move]=[]
             for tMove in tigerMoves:
                 if tMove.capture:
                     captures.append(move)
@@ -23,7 +23,7 @@ class AggressiveGoatAgent(Agent):
                 safeMoves.append(move)
                 safeMovesPriority.append(len(tigerMoves))
             self.game.unplay(move)
-        bestMoves : list[Move]=[]
+        bestMoves : List[Move]=[]
         if len(safeMoves) != 0:
             bestPriority = min(safeMovesPriority)
             for i in range(len(safeMoves)):

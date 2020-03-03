@@ -30,6 +30,7 @@ class Playoff:
                     stats.summarize()
                 except:
                     print(f"{goatAgentName} vs. {tigerAgentName}: failed")
+                    raise
 
 
     

@@ -1,27 +1,26 @@
-from main import game
-from hungrytigeragent import HungryTigerAgent
-from agent import Agent
-from game import Game
-from const import Const
-from move import Move
-from typing import Optional, Tuple, List, Set
-from hungrytigeragent import HungryTigerAgent
-from scaredgoatagent import ScaredGoatAgent
 import random
 
+from typing import Optional, Tuple, List, Set
+
+from const import Const
+from move import Move
+from game import Game
+from agent import Agent
+from hungrytigeragent import HungryTigerAgent
+from aggressivegoatagent import AggressiveGoatAgent
 class MinMaxAgent(Agent):
     DEFAULT_MAX_DEPTH : int = 2
 
     def __init__(self,game : Game, side : int, maxDepth : int = DEFAULT_MAX_DEPTH):
         super(MinMaxAgent, self).__init__(game,side)
         self._simpleTigerAgent : Agent = HungryTigerAgent(game)
-        self._simpleGoatAgent : Agent = ScaredGoatAgent(game)
+        self._simpleGoatAgent : Agent = AggressiveGoatAgent(game)
         self._maxDepth : int = maxDepth
 
     @property
     def game(self) -> Game:
         return self._game
-        
+
     @game.setter
     def game(self,value) -> None:
         self._game = value
@@ -92,7 +91,7 @@ class MinMaxAgent(Agent):
             if self._game.state == Const.STATE_TURN_TIGER:
                 return self.evaluateMax(depth)
             else:
-                return self.evaluateMax(depth)
+                return self.evaluateMin(depth)
 
     def evaluateHeuristic(self) -> float:
         moves : List[Move] = []
