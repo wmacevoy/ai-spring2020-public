@@ -34,3 +34,5 @@ You can then activate this environment with
 ```bash
 conda activate ./pypy-env
 ```
+
+This gives you something that should be python 3.6 compatible (but much faster), to run a command use `pypy3` instead of `python`
