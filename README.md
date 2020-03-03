@@ -22,3 +22,15 @@ conda activate ./env
 py3hello/hellotest/hellotest.py
 ```
 
+## Create pypy 3 environment
+
+In the project home directory, type
+
+```bash
+conda create -p ./pypy-env -c conda-forge pypy3.6
+```
+
+You can then activate this environment with
+```bash
+conda activate ./pypy-env
+```
