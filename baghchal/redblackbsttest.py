@@ -1,5 +1,6 @@
 import unittest
 
+
 from redblackbst import RedBlackBST
 
 class RedBlackBSTTest(unittest.TestCase):

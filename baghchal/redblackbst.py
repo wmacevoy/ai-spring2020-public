@@ -7,38 +7,39 @@ from __future__ import annotations
 Key = TypeVar('Key')
 Value = TypeVar('Value')
 
+class RedBlackBSTNode(Generic[Key,Value]):
+        def __init__(self, key : Key, value : Value, color : bool, size : int):
+            self.key : Key = key
+            self.value : Value = value
+            self.color : bool = color
+            self.size : int = size
+            self.left : Optional[RedBlackBSTNode[Key,Value]] = None
+            self.right : Optional[RedBlackBSTNode[Key,Value]] = None
     
 
 class RedBlackBST(Generic[Key,Value]):
     RED : bool = True
     BLACK : bool = False
 
-    class Node(Generic[Key,Value]):
-        def __init__(self, key : Key, value : Value, color : bool, size : int):
-            self.key : Key = key
-            self.value : Value = value
-            self.color : bool = color
-            self.size : int = size
-            self.left : Optional[RedBlackBST.Node[Key,Value]] = None
-            self.right : Optional[RedBlackBST.Node[Key,Value]] = None
+    
 
     def __init__(self):
-        self._root : Optional[RedBlackBST.Node[Key,Value]] = None
+        self._root : Optional[RedBlackBSTNode[Key,Value]] = None
         
     @classmethod
-    def _isRed(cls,x : Optional[Node[Key,Value]]) -> bool:
+    def _isRed(cls,x : Optional[RedBlackBSTNode[Key,Value]]) -> bool:
         if x == None:
             return False
         return x.color == cls.RED
 
     @classmethod
-    def _isBlack(cls,x : Optional[Node[Key,Value]]) -> bool:
+    def _isBlack(cls,x : Optional[RedBlackBSTNode[Key,Value]]) -> bool:
         if x == None:
             return True
         return x.color == cls.BLACK
     
     @classmethod
-    def _size(cls, x : Optional[Node[Key,Value]]) -> int:
+    def _size(cls, x : Optional[RedBlackBSTNode[Key,Value]]) -> int:
         if x == None:
             return 0
         return x.size
@@ -56,7 +57,7 @@ class RedBlackBST(Generic[Key,Value]):
         return self._get(self._root, key)
 
     @classmethod
-    def _get(cls,x : Optional[Node[Key,Value]], key : Key) -> Optional[Value]:
+    def _get(cls,x : Optional[RedBlackBSTNode[Key,Value]], key : Key) -> Optional[Value]:
         while x != None:
             if key < x.key:
                 x = x.left
@@ -74,9 +75,9 @@ class RedBlackBST(Generic[Key,Value]):
         self._root.color = self.BLACK 
 
     @classmethod
-    def _put(cls,h : Optional[Node[Key,Value]], key : Key, value : Value):
+    def _put(cls,h : Optional[RedBlackBSTNode[Key,Value]], key : Key, value : Value):
         if h == None:
-            return RedBlackBST.Node[Key,Value](key, value, cls.RED, 1)
+            return RedBlackBSTNode[Key,Value](key, value, cls.RED, 1)
         if key < h.key:
             h.left = cls._put(h.left,key,value)
         elif key > h.key:
@@ -100,12 +101,12 @@ class RedBlackBST(Generic[Key,Value]):
         if not self._isRed(self._root.left) and self._isBlack(self._root.right):
             self._root.color = self.RED
 
-        self._root = self._deleteMin(cast(RedBlackBST.Node[Key,Value],self._root))
+        self._root = self._deleteMin(cast(RedBlackBSTNode[Key,Value],self._root))
         if not self.empty:
             self._root.color = self.BLACK
 
     @classmethod
-    def _deleteMin(cls,h : Node[Key,Value]) -> Optional[Node[Key,Value]]:
+    def _deleteMin(cls,h : RedBlackBSTNode[Key,Value]) -> Optional[RedBlackBSTNode[Key,Value]]:
         if h.left == None:
             return None
         if cls._isBlack(h.left) and cls._isBlack(h.left.left):
@@ -120,13 +121,13 @@ class RedBlackBST(Generic[Key,Value]):
         if self._isBlack(self._root.left) and self._isBlack(self._root.right):
             self._root.color = self.RED
 
-        self._root = self._deleteMax(cast(RedBlackBST.Node[Key,Value],self._root))
+        self._root = self._deleteMax(cast(RedBlackBSTNode[Key,Value],self._root))
         if not self.empty:
             self._root.color = self.BLACK
 
 
     @classmethod
-    def _deleteMax(cls,h : Node[Key,Value]) -> Optional[Node[Key,Value]]:
+    def _deleteMax(cls,h : RedBlackBSTNode[Key,Value]) -> Optional[RedBlackBSTNode[Key,Value]]:
         if cls._isRed(h.left):
             h = cls._rotateRight(h)
         if h.right == None:
@@ -144,18 +145,18 @@ class RedBlackBST(Generic[Key,Value]):
         if self._isBlack(self._root.left) and self._isBlack(self._root.right):
             self._root.color = self.RED
 
-        self._root = self._delete(cast(RedBlackBST.Node[Key,Value],self._root), key)
+        self._root = self._delete(cast(RedBlackBSTNode[Key,Value],self._root), key)
         if not self.empty:
             self._root.color = self.BLACK
         if not self.empty:
             self._root.color = self.BLACK
 
     @classmethod
-    def _delete(cls,h : Node[Key,Value], key : Key) -> Optional[Node[Key,Value]]:
+    def _delete(cls,h : RedBlackBSTNode[Key,Value], key : Key) -> Optional[RedBlackBSTNode[Key,Value]]:
         if key < h.key:
             if cls._isBlack(h.left) and cls._isBlack(h.left.left):
                 h = cls._moveRedLeft(h)
-            h.left = cls._delete(cast(RedBlackBST.Node[Key,Value],h.left), key)
+            h.left = cls._delete(cast(RedBlackBSTNode[Key,Value],h.left), key)
         else:
             if cls._isRed(h.left):
                 h = cls._rotateRight(h)
@@ -164,17 +165,17 @@ class RedBlackBST(Generic[Key,Value]):
             if cls._isBlack(h.right) and cls._isBlack(h.right.left):
                 h = cls._moveRedRight(h)
             if key == h.key:
-                x : Node[Key,Value] = cls._min(h.right)
+                x : RedBlackBSTNode[Key,Value][Key,Value] = cls._min(cast(RedBlackBSTNode[Key,Value],h.right))
                 h.key = x.key
                 h.value = x.value
-                h.right = cls._deleteMin(h.right)
+                h.right = cls._deleteMin(cast(RedBlackBSTNode[Key,Value],h.right))
             else:
-                h.right = cls._delete(h.right, key)
+                h.right = cls._delete(cast(RedBlackBSTNode[Key,Value],h.right), key)
         return cls._balance(h)
 
     @classmethod
-    def _rotateRight(cls,h : Node[Key,Value]) -> Node[Key,Value]:
-        x : Node[Key,Value] = h.left
+    def _rotateRight(cls,h : RedBlackBSTNode[Key,Value]) -> RedBlackBSTNode[Key,Value]:
+        x : RedBlackBSTNode[Key,Value] = cast(RedBlackBSTNode[Key,Value],h.left)
         h.left = x.right
         x.right = h
         x.color = x.right.color
@@ -184,8 +185,8 @@ class RedBlackBST(Generic[Key,Value]):
         return x
 
     @classmethod
-    def _rotateLeft(cls,h : Node[Key,Value]) -> Node[Key,Value]:
-        x : Node[Key,Value] = h.right
+    def _rotateLeft(cls,h : RedBlackBSTNode[Key,Value]) -> RedBlackBSTNode[Key,Value]:
+        x : RedBlackBSTNode[Key,Value] = cast(RedBlackBSTNode[Key,Value],h.right)
         h.right = x.left
         x.left = h
         x.color = x.left.color
@@ -195,22 +196,22 @@ class RedBlackBST(Generic[Key,Value]):
         return x
 
     @classmethod
-    def _flipColors(cls,h : Node[Key,Value]) -> None:
+    def _flipColors(cls,h : RedBlackBSTNode[Key,Value]) -> None:
         h.color = not h.color
         h.left.color = not h.left.color
         h.right.color = not h.right.color
 
     @classmethod
-    def _moveRedLeft(cls,h : Node[Key,Value]) -> Node[Key,Value]:
+    def _moveRedLeft(cls,h : RedBlackBSTNode[Key,Value]) -> RedBlackBSTNode[Key,Value]:
         cls._flipColors(h)
         if cls._isRed(h.right.left):
-            h.right = cls._rotateRight(cast(RedBlackBST.Node[Key,Value],h.right))
+            h.right = cls._rotateRight(cast(RedBlackBSTNode[Key,Value],h.right))
             h = cls._rotateLeft(h)
             cls._flipColors(h)
         return h
 
     @classmethod
-    def _moveRedRight(cls,h : Node[Key,Value]) -> Node[Key,Value]:
+    def _moveRedRight(cls,h : RedBlackBSTNode[Key,Value]) -> RedBlackBSTNode[Key,Value]:
         cls._flipColors(h)
         if cls._isRed(h.left.left):
             h = cls._rotateRight(h)
@@ -218,7 +219,7 @@ class RedBlackBST(Generic[Key,Value]):
         return h
 
     @classmethod
-    def _balance(cls,h : Node[Key,Value]) -> Node[Key,Value]:
+    def _balance(cls,h : RedBlackBSTNode[Key,Value]) -> RedBlackBSTNode[Key,Value]:
         if cls._isRed(h.right):
             h = cls._rotateLeft(h)
         if cls._isRed(h.left) and cls._isRed(h.left.left): 
@@ -233,7 +234,7 @@ class RedBlackBST(Generic[Key,Value]):
         return self._height(self._root)
 
     @classmethod
-    def _height(cls,x : Optional[Node[Key,Value]]) -> int:
+    def _height(cls,x : Optional[RedBlackBSTNode[Key,Value]]) -> int:
         if x == None:
             return -1
         return 1 + max(cls._height(x.left), cls._height(x.right))
@@ -241,10 +242,10 @@ class RedBlackBST(Generic[Key,Value]):
     def min(self) -> Key:
         if self.empty:
             raise ValueError("min of empty tree")
-        return self._min(cast(RedBlackBST.Node[Key,Value],self._root)).key
+        return self._min(cast(RedBlackBSTNode[Key,Value],self._root)).key
 
     @classmethod
-    def _min(cls,x : Node[Key,Value]) -> Node[Key,Value]:
+    def _min(cls,x : RedBlackBSTNode[Key,Value]) -> RedBlackBSTNode[Key,Value]:
         if x.left == None:
             return x
         return cls._min(x.left)
@@ -252,57 +253,57 @@ class RedBlackBST(Generic[Key,Value]):
     def max(self) -> Key:
         if self.empty:
             raise ValueError("max of empty tree")
-        return self._max(cast(RedBlackBST.Node[Key,Value],self._root)).key
+        return self._max(cast(RedBlackBSTNode[Key,Value],self._root)).key
 
     @classmethod
-    def _max(cls,x : Node[Key,Value]) -> Node[Key,Value]:
+    def _max(cls,x : RedBlackBSTNode[Key,Value]) -> RedBlackBSTNode[Key,Value]:
         if x.right == None:
             return x
         return cls._max(x.right)
 
     def floor(self,key : Key) -> Optional[Key]:
-        x : Optional[RedBlackBST.Node[Key,Value]]  = self._floor(self._root,key)
+        x : Optional[RedBlackBSTNode[Key,Value]]  = self._floor(self._root,key)
         return x.key if x != None else None
 
     @classmethod
-    def _floor(cls,x : Optional[Node[Key,Value]], key : Key) -> Optional[Node[Key,Value]]:
+    def _floor(cls,x : Optional[RedBlackBSTNode[Key,Value]], key : Key) -> Optional[RedBlackBSTNode[Key,Value]]:
         if x == None:
             return None
         if key == x.key:
             return x
         if key < x.key:
             return cls._floor(x.left,key)
-        t : Optional[RedBlackBST.Node[Key,Value]] = cls._floor(x.right, key)
+        t : Optional[RedBlackBSTNode[Key,Value]] = cls._floor(x.right, key)
         return t if t != None else x
 
     def ceiling(self,key : Key) -> Optional[Key]:
-        x : Optional[RedBlackBST.Node[Key,Value]] = self._ceiling(self._root, key)
+        x : Optional[RedBlackBSTNode[Key,Value]] = self._ceiling(self._root, key)
         return x.key if x != None else None
 
     @classmethod
-    def _ceiling(cls,x : Optional[Node[Key,Value]], key : Key) -> Optional[Node[Key,Value]]:
+    def _ceiling(cls,x : Optional[RedBlackBSTNode[Key,Value]], key : Key) -> Optional[RedBlackBSTNode[Key,Value]]:
         if x == None:
             return None
         if key == x.key:
             return x
         if key > x.key:
             return cls._ceiling(x.right,key)
-        t : Optional[RedBlackBST.Node[Key,Value]] = cls._ceiling(x.left,key)
+        t : Optional[RedBlackBSTNode[Key,Value]] = cls._ceiling(x.left,key)
         return t if t != None else x
 
     def select(self, k : int) -> Key:
         if k < 0 or k >= self.size:
             raise ValueError("invalid select index")
-        x : RedBlackBST.Node[Key,Value] = self._select(cast(RedBlackBST.Node[Key,Value],self._root),k)
+        x : RedBlackBSTNode[Key,Value] = self._select(cast(RedBlackBSTNode[Key,Value],self._root),k)
         return x.key
 
     @classmethod
-    def _select(cls,x : Node[Key,Value], k : int) -> Node[Key,Value]:
+    def _select(cls,x : RedBlackBSTNode[Key,Value], k : int) -> RedBlackBSTNode[Key,Value]:
         t = cls._size(x)
         if t > k:
-            return cls._select(cast(RedBlackBST.Node[Key,Value],x.left),k)
+            return cls._select(cast(RedBlackBSTNode[Key,Value],x.left),k)
         elif t < k:
-            return cls._select(cast(RedBlackBST.Node[Key,Value],x.right),k-t-1)
+            return cls._select(cast(RedBlackBSTNode[Key,Value],x.right),k-t-1)
         else:
             return x
 
@@ -310,7 +311,7 @@ class RedBlackBST(Generic[Key,Value]):
         return self._rank(key, self._root)
 
     @classmethod
-    def _rank(cls, key : Key, x : Optional[Node[Key,Value]]):
+    def _rank(cls, key : Key, x : Optional[RedBlackBSTNode[Key,Value]]):
         if x == None:
             return 0
         if key < x.key:
@@ -332,7 +333,7 @@ class RedBlackBST(Generic[Key,Value]):
         return queue
 
     @classmethod
-    def _keysInRange(cls, x : Optional[Node[Key,Value]], queue : List[Key], lo : Key, hi : Key) -> None:
+    def _keysInRange(cls, x : Optional[RedBlackBSTNode[Key,Value]], queue : List[Key], lo : Key, hi : Key) -> None:
         if x == None:
             return
         if lo < x.key:
@@ -350,8 +351,8 @@ class RedBlackBST(Generic[Key,Value]):
         else:
             return self.rank(hi) - self.rank(lo)
 
-    def _node(self,i : int) -> Node[Key,Value]:
-        p : Node[Key,Value] = self._root
+    def _node(self,i : int) -> RedBlackBSTNode[Key,Value]:
+        p : RedBlackBSTNode[Key,Value] = cast(RedBlackBSTNode[Key,Value],self._root)
         while i > 0:
             i -= 1
             if p.left != None:
@@ -359,13 +360,13 @@ class RedBlackBST(Generic[Key,Value]):
                     p = p.left
                 else:
                     i -= p.left.size
-                    p = p.right
+                    p = cast(RedBlackBSTNode[Key,Value],p.right)
             else:
-                p = p.right
+                p = cast(RedBlackBSTNode[Key,Value],p.right)
         return p
 
     def key(self, i : int) -> Key:
-        return self.node(i).key
+        return self._node(i).key
     
     def clear(self) -> None:
         self._root = None
