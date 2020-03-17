@@ -1,8 +1,9 @@
 #
 # Port of red black bst from Java AI 2018
 #
-from typing import Sized, TypeVar,Generic,Optional,cast,List
 from __future__ import annotations
+
+from typing import Sized, TypeVar,Generic,Optional,cast,List
 
 Key = TypeVar('Key')
 Value = TypeVar('Value')
