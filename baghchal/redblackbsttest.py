@@ -2,7 +2,7 @@ import unittest
 import math, random
 
 from redblackbst import RedBlackBST
-
+from typing import List
 class RedBlackBSTTest(unittest.TestCase):
     def testDefault(self):
         t : RedBlackBST[int,str] = RedBlackBST[int,str]()

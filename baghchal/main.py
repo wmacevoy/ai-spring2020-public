@@ -16,6 +16,7 @@ from const import Const
 from goatAgrosAgent import GoatAgrosAgent
 from occamsgoatagent import OccamsGoatAgent
 from minmaxagent import MinMaxAgent
+from cachingminmaxagent import CachedMinMaxAgent
 
 game = Game()
 playoff = Playoff(trials = 1)
@@ -29,7 +30,7 @@ playoff = Playoff(trials = 1)
 # playoff.addGoatAgent("occams goat",OccamsGoatAgent(game))
 # playoff.addGoatAgent("random goat",RandomAgent(game,Const.MARK_GOAT))
 # playoff.addGoatAgent("minmax 1 goat",MinMaxAgent(game=game,side=Const.MARK_GOAT,maxDepth=1))
-playoff.addGoatAgent("minmax 2 goat",MinMaxAgent(game=game,side=Const.MARK_GOAT,maxDepth=2))
+playoff.addGoatAgent("cached minmax 2 goat",CachedMinMaxAgent(game=game,side=Const.MARK_GOAT,maxDepth=2,maxCacheSize=10_000))
 # playoff.addGoatAgent("minmax 3 goat",MinMaxAgent(game=game,side=Const.MARK_GOAT,maxDepth=3))
 
 # playoff.addTigerAgent("random tiger",RandomAgent(game,Const.MARK_TIGER))

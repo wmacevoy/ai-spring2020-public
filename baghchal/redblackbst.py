@@ -1,7 +1,8 @@
 #
 # Port of red black bst from Java AI 2018
 #
-from __future__ import annotations
+
+# from __future__ import annotations
 
 from typing import Sized, TypeVar,Generic,Optional,cast,List
 
@@ -20,13 +21,11 @@ class RedBlackBSTNode(Generic[Key,Value]):
 
 class RedBlackBST(Generic[Key,Value]):
     RED : bool = True
-    BLACK : bool = False
-
-    
+    BLACK : bool = False    
 
     def __init__(self):
         self._root : Optional[RedBlackBSTNode[Key,Value]] = None
-        
+
     @classmethod
     def _isRed(cls,x : Optional[RedBlackBSTNode[Key,Value]]) -> bool:
         if x == None:
